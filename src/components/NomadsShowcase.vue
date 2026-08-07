@@ -2,10 +2,10 @@
   <section class="nomads-showcase-section">
     <div class="showcase-header">
       <div class="header-left">
-        <h2 class="showcase-title">实战案例与养生预设模板库 (Nomads Showcase)</h2>
-        <p class="showcase-subtitle">精选科学养生与健康照护场景，点击“一键套用”快速生成专属调理方案</p>
+        <h2 class="showcase-title">实战案例与模板库 (Nomads Showcase)</h2>
+        <p class="showcase-subtitle">精选高频实战场景，点击“一键套用”快速生成高质量结果</p>
       </div>
-      <span class="showcase-badge">已收录 {{ showcaseItems.length }} 个健康实战模板</span>
+      <span class="showcase-badge">已收录 {{ showcaseItems.length }} 个实战模板</span>
     </div>
 
     <div class="showcase-grid">
@@ -41,95 +41,119 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+const props = defineProps<{
+  appTitle?: string;
+  isImage?: boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: 'apply-template', payload: { prompt: string; style?: string }): void;
+}>();
+
 export interface ShowcaseItem {
   id: string;
   tag: string;
   title: string;
   prompt: string;
-  healthType?: string;
-  targetGroup?: string;
-  healthFocus?: string;
+  style?: string;
   usageCount: string;
 }
 
-const emit = defineEmits<{
-  (e: 'apply-template', payload: {
-    prompt: string;
-    healthType?: string;
-    targetGroup?: string;
-    healthFocus?: string;
-  }): void;
-}>();
-
-const showcaseItems = computed<ShowcaseItem[]>(() => [
-  {
-    id: 'jiankang-1',
-    tag: '职场久坐',
-    title: '程序员久坐腰颈痛与肩颈放松调理',
-    prompt: '长时间电脑前工作，伴有颈椎僵硬、腰酸背痛与眼干眼疲劳，需要制定系统性的办公室伸展复健与护眼调理方案。',
-    healthType: '职场久坐亚健康与腰颈调理',
-    targetGroup: '职场白领',
-    healthFocus: '护眼明目',
-    usageCount: '34.2k'
-  },
-  {
-    id: 'jiankang-2',
-    tag: '睡眠调理',
-    title: '长期失眠多梦与焦虑安神食疗',
-    prompt: '入睡困难、夜间易醒且常伴有工作压力造成的轻度焦虑，请求提供助眠作息调整指南与温和安神食疗炖汤配方。',
-    healthType: '睡眠改善与焦虑情绪舒缓',
-    targetGroup: '职场白领',
-    healthFocus: '改善睡眠',
-    usageCount: '41.8k'
-  },
-  {
-    id: 'jiankang-3',
-    tag: '科学减脂',
-    title: '低糖低脂抗糖餐单与控糖饮食',
-    prompt: '希望在维持良好精神状态的同时控制体脂与血糖升幅，需要一份为期一周的低GI科学膳食食谱及日常替换食材建议。',
-    healthType: '科学膳食减脂与营养餐单',
-    targetGroup: '健身爱好者',
-    healthFocus: '消化肠道调理',
-    usageCount: '29.5k'
-  },
-  {
-    id: 'jiankang-4',
-    tag: '慢病养生',
-    title: '中老年高血压日常饮食提醒与养生',
-    prompt: '60岁以上长辈血压偏高，需控制钠盐摄入并保持血管弹性，请出具低盐低脂降压饮食法则及适度散步锻炼禁忌。',
-    healthType: '中老年日常养生与慢病预防',
-    targetGroup: '中老年长辈',
-    healthFocus: '提升免疫力',
-    usageCount: '38.6k'
-  },
-  {
-    id: 'jiankang-5',
-    tag: '产后复健',
-    title: '产后气血恢复与肠道调理方案',
-    prompt: '产后恢复期体力虚弱、消化不良且伴有睡眠不足，需要科学温补膳食配比与产后低强度核心恢复运动指引。',
-    healthType: '科学膳食减脂与营养餐单',
-    targetGroup: '产后妈妈',
-    healthFocus: '消化肠道调理',
-    usageCount: '27.4k'
-  },
-  {
-    id: 'jiankang-6',
-    tag: '免疫提升',
-    title: '肠道消化不良与益生菌膳食调理',
-    prompt: '经常腹胀、便秘或消化不良，免疫力较为低下，请求制定调理肠道菌群的膳食纤维搭配与日常生活禁忌。',
-    healthType: '职场久坐亚健康与腰颈调理',
-    targetGroup: '职场白领',
-    healthFocus: '提升免疫力',
-    usageCount: '31.1k'
+// 模拟实战案例数据库（支持根据文本/图像类及应用主题切换）
+const showcaseItems = computed<ShowcaseItem[]>(() => {
+  if (props.isImage) {
+    return [
+      {
+        id: 'img-1',
+        tag: '写真肖像',
+        title: '商务精英形象照',
+        prompt: '高端写字楼背景，身穿深蓝色西装，眼神自信专注，赛博朋克光影效果',
+        style: '<photography>',
+        usageCount: '18.5k'
+      },
+      {
+        id: 'img-2',
+        tag: '概念插画',
+        title: '未来科幻城市海报',
+        prompt: '霓虹灯光的赛博朋克立体城市，飞行汽车，高品质概念插画，8k分辨率',
+        style: '<illustration>',
+        usageCount: '24.1k'
+      },
+      {
+        id: 'img-3',
+        tag: '二次元动漫',
+        title: '日系国潮动漫角色',
+        prompt: '穿着现代汉服的国风少年，手持纸伞，水彩漫感，唯美光感与柔光滤镜',
+        style: '<anime>',
+        usageCount: '15.9k'
+      },
+      {
+        id: 'img-4',
+        tag: '水彩艺术',
+        title: '治愈系自然风景画',
+        prompt: '晨雾中的森林湖泊，阳光穿透树林，水彩渐变质感，温馨治愈风格',
+        style: '<watercolor>',
+        usageCount: '12.3k'
+      }
+    ];
+  } else {
+    return [
+      {
+        id: 'text-1',
+        tag: '职场总结',
+        title: '周报 OKR 成果提炼',
+        prompt: '本周完成了核心模块优化与线上异常排查，请帮我梳理为具备量化指标的 OKR 汇报文案',
+        style: '专业干练，结果导向',
+        usageCount: '32.8k'
+      },
+      {
+        id: 'text-2',
+        tag: '高情商沟通',
+        title: '拒绝不合理加班话术',
+        prompt: '领导在周末突然布置非紧急任务，如何高情商、委婉且有理有据地推迟到工作日处理？',
+        style: '高情商，委婉，有情调',
+        usageCount: '28.4k'
+      },
+      {
+        id: 'text-3',
+        tag: '短视频文案',
+        title: '知识干货吸睛开头',
+        prompt: '准备制作一条关于高效学习法的短视频，设计 3 个能在前 3 秒留住用户的爆款口播开头',
+        style: '专业干练，结果导向',
+        usageCount: '45.1k'
+      },
+      {
+        id: 'text-4',
+        tag: '商务公文',
+        title: '跨部门协同申请函',
+        prompt: '因项目上线需要研发部门配合联调，撰写一份正式、严谨且明确时间节点的协同申请书',
+        style: '专业干练，结果导向',
+        usageCount: '19.7k'
+      },
+      {
+        id: 'text-5',
+        tag: '小红书种草',
+        title: '实战干货笔记排版',
+        prompt: '分享 5 个提升日常工作效率的文字工具，语言亲切，搭配吸引人的标题与 Emoji 排版',
+        style: '高情商，委婉，有情调',
+        usageCount: '36.2k'
+      },
+      {
+        id: 'text-6',
+        tag: '学术润色',
+        title: '论文摘要与结论重构',
+        prompt: '将以下粗糙的研究结论重写为学术规范、逻辑严密且无语法语病的论文摘要总结',
+        style: '专业干练，结果导向',
+        usageCount: '22.0k'
+      }
+    ];
   }
-]);
+});
 
 function applyTemplate(item: ShowcaseItem) {
   emit('apply-template', {
     prompt: item.prompt,
-    healthType: item.healthType,
-    targetGroup: item.targetGroup,
-    healthFocus: item.healthFocus
+    style: item.style
   });
 }
 </script>
